@@ -1,14 +1,18 @@
-const fs = require('fs');
+const mongoose = require('mongoose');
+const connect = mongoose.connect('mongodb://localhost:27017/test');
+const soundSchema = new mongoose.Schema({
+    name: String,
+    binData: Buffer,
+  });
+
+const Sound = mongoose.model('Sound', soundSchema);
+
 exports.handler = async (event, context) => {
-    const eventBody = event.body;
-    console.log('eventBody is: ', eventBody);
-    // const newDb = [event.body];
-    // fs.writeFile(
-    //     './db/tempDb.txt', 
-    //     `const db = ${newDb}; module.exports = db;`, 
-    //     (err) => {
-    //         console.log(err);
-    // });
+    await connect;
+    const eventBody = JSON.parse(event.body);
+    const soundData = Sound.create(eventBody);
+    console.log(soundData);
+
     return {
         statusCode: 200,
         // body: JSON.stringify(newDb),

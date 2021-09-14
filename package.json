@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/Windowmac/soundgraph#readme",
   "dependencies": {
-    "axios": "^0.21.4"
+    "axios": "^0.21.4",
+    "mongoose": "^6.0.5"
   }
 }
