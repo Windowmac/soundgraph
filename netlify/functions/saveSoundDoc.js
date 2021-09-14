@@ -10,7 +10,6 @@ const Sound = mongoose.model('Sound', soundSchema);
 exports.handler = async (event, context) => {
     await connect;
     const eventBody = JSON.parse(event.body);
-    console.log('eventBody is: ', eventBody);
     const soundData = await Sound.create(eventBody);
     console.log(soundData);
 
