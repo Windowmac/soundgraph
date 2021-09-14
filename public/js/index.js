@@ -36,13 +36,13 @@ if (navigator.mediaDevices.getUserMedia) {
       );
       const blob = new Blob(chunks, { type: 'audio/ogg; codecs=opus' });
 
-      const response = await fetch('./.netlify/functions/writeDb', {
+      const response = await fetch('/.netlify/functions/writeDb', {
         method: 'POST',
         body: JSON.stringify({
             name: clipName,
             binData: blob.toString()
         })
-      }).catch((err) => {
+      }).then(response => response.json()).catch((err) => {
         console.log(err);
       });
 

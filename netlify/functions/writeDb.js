@@ -10,11 +10,12 @@ const Sound = mongoose.model('Sound', soundSchema);
 exports.handler = async (event, context) => {
     await connect;
     const eventBody = JSON.parse(event.body);
-    const soundData = Sound.create(eventBody);
+    console.log('eventBody is: ', eventBody);
+    const soundData = await Sound.create(eventBody);
     console.log(soundData);
 
     return {
-        statusCode: 200,
-        // body: JSON.stringify(newDb),
+        statusCode: 201,
+        body: JSON.stringify(soundData),
     }
 }
