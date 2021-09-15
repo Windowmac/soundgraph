@@ -9,13 +9,19 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <title>soundgraph</title>
 </head>
-<body>
-    <div class="columns">
-        <div class="column">
-            <button id="record" data-held="false">Record</button>
-            <button id="play">Play</button>
+<body class="has-background-dark" style="height: 100vw;">
+    <section class="section" id="record-section">
+        <div class="container is-fluid">
+            <div class="columns">
+                <div class="column is-6" id="record" data-held="false">
+                    Record
+                </div>
+                <div class="column is-6" id="play">
+                    Play
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
     <script type="module" src="./js/index.js"></script>
 </body>
 </html>

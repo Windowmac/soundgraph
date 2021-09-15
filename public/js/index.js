@@ -19,6 +19,10 @@ if (navigator.mediaDevices.getUserMedia) {
 
   const playBtn = document.getElementById('play');
   playBtn.addEventListener('click', () => {
+    const recordSection = document.getElementById('record-section');
+    recordSection.parentNode.removeChild(recordSection);
+    const playSection = document.getElementById('play-section');
+    playSection.parentNode.removeChild(playSection);
     loadPlaylist();
   });
 
