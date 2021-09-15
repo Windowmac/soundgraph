@@ -1,11 +1,6 @@
 const mongoose = require('mongoose');
 const connect = mongoose.connect('mongodb://localhost:27017/test');
-const soundSchema = new mongoose.Schema({
-    name: String,
-    binData: Buffer,
-  });
-
-const Sound = mongoose.model('Sound', soundSchema);
+const Sound = require('./models/Sound.js');
 
 exports.handler = async (event, context) => {
     await connect;

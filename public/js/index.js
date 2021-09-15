@@ -1,4 +1,4 @@
-import play from "./play.js";
+import loadPlaylist from "./loadPlaylist.js";
 import record from "./record.js";
 
 let audioCtx;
@@ -19,9 +19,9 @@ if (navigator.mediaDevices.getUserMedia) {
 
   const playBtn = document.getElementById('play');
   playBtn.addEventListener('click', () => {
-    play();
+    loadPlaylist();
   });
-  
+
 } else {
   console.log('get user media is not supported on your browser!');
 };
