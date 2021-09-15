@@ -16,7 +16,7 @@ const loadPlaylist = async () => {
       const iconTextEl = document.createElement('div');
       iconTextEl.classList.add('icon-text');
       const iconEl = document.createElement('span');
-      iconEl.classList.add('icon', 'is-large', 'has-text-success');
+      iconEl.classList.add('icon', 'is-large', 'has-color-chartreuse');
       const iEl = document.createElement('ion-icon');
       iEl.classList.add('ion-ionic', 'icon-dimensions-large');
       iEl.name = 'volume-high';
@@ -31,7 +31,6 @@ const loadPlaylist = async () => {
       textSpanEl.textContent = sound.name;
       textSpanEl.style.fontSize = '25px';
       textSpanEl.style.fontFamily = 'monospace';
-      textSpanEl.classList.add('has-text-success');
 
 
       document.body.appendChild(sectionEl);
