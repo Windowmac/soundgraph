@@ -1,0 +1,36 @@
+body {
+  background: linear-gradient(#0c2f18, #021a02);
+  color: rgb(12, 216, 29);
+  font-family: monospace;
+}
+
+.box {
+  border: rgb(32, 230, 32) 2px solid;
+  border-radius: 30px;
+  background:   linear-gradient(218deg, rgb(173, 241, 63), darkgreen),
+                linear-gradient(273deg, darkgreen, chartreuse),
+                linear-gradient(266deg, darkgreen, green);
+  color: chartreuse;
+  text-shadow: 1px 0px 0px black;
+}
+
+.touch-bubble {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: chartreuse;
+  position: absolute;
+  opacity: 0;
+  animation: scaleIn 4s infinite cubic-bezier(.36, .11, .89, .32);
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(.5, .5);
+    opacity: .5;
+  }
+  to {
+    transform: scale(2.5, 2.5);
+    opacity: 0;
+  }
+}
