@@ -1,4 +1,4 @@
-import loadPlaylist from "./loadPlaylist.js";
+import loadPlaylist from "./play/loadPlaylist.js";
 import record from "./record.js";
 
 let audioCtx;
