@@ -2,16 +2,14 @@ import loadGraph from "./loadGraph.js";
 import initAudioCtx from "./initAudioCtx.js";
 
 const loadPlaylist = async (isInit, audioCtx) => {
-    const soundList = await fetch('/.netlify/functions/getSounds')
-    .then(response => response.json()).catch(err => {
-        console.log(err);
-    });
+    const soundList = await axios.get('/.netlify/functions/getSounds').catch(err => {console.log(err)});
+    console.log(soundList);
     
     const sectionEl = document.createElement('div');
     sectionEl.style.height = '100vw';
     sectionEl.classList.add('section');
     
-    soundList.forEach(sound => {
+    soundList.data.forEach(sound => {
       const boxEl = document.createElement('div');
       boxEl.classList.add('box', 'has-background-dark');
       const iconTextEl = document.createElement('div');
@@ -47,14 +45,7 @@ const loadPlaylist = async (isInit, audioCtx) => {
 
       boxEl.addEventListener('click', async () => {
         boxEl.parentNode.parentNode.removeChild(sectionEl);
-        const chosenSound = await fetch('/.netlify/functions/chooseSound', {
-          method: 'POST',
-          body: JSON.stringify({
-            id: sound._id
-          })
-        }).then(response => response.json()).catch((err) => {
-          console.log('error choosing sound', err);
-        });
+        const chosenSound = await axios.post('/.netlify/functions/chooseSound', {id: sound._id}, )
 
         console.log('chosenSound is: ', chosenSound);
 

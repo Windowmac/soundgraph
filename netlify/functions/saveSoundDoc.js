@@ -4,7 +4,6 @@ const Sound = require('./models/Sound.js');
 const multer  = require('multer');
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
-const getStream = require('get-stream');
 
 const express = require("express");
 const serverless = require("serverless-http");
