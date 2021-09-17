@@ -8,7 +8,7 @@ exports.handler = async () => {
   const sounds = await Sound.find({}).catch((err) => {
     console.log(err);
   });
-
+  
   return {
     statusCode: 201,
     body: JSON.stringify(sounds),

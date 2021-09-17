@@ -1,6 +1,7 @@
 import loadPlaylist from "./play/loadPlaylist.js";
 import record from "./record.js";
 
+let isInit = false;
 let audioCtx;
 
 if (navigator.mediaDevices.getUserMedia) {
@@ -21,7 +22,7 @@ if (navigator.mediaDevices.getUserMedia) {
   playBtn.addEventListener('click', () => {
     const sectionEl = document.getElementById('section');
     sectionEl.parentNode.removeChild(sectionEl);
-    loadPlaylist();
+    loadPlaylist(isInit, audioCtx);
   });
 
 } else {

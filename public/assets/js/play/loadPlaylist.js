@@ -1,6 +1,7 @@
 import loadGraph from "./loadGraph.js";
+import initAudioCtx from "./initAudioCtx.js";
 
-const loadPlaylist = async () => {
+const loadPlaylist = async (isInit, audioCtx) => {
     const soundList = await fetch('/.netlify/functions/getSounds')
     .then(response => response.json()).catch(err => {
         console.log(err);
@@ -44,9 +45,22 @@ const loadPlaylist = async () => {
       column2.appendChild(textSpanEl);
 
 
-      boxEl.addEventListener('click', () => {
+      boxEl.addEventListener('click', async () => {
         boxEl.parentNode.parentNode.removeChild(sectionEl);
-        loadGraph(sound);
+        const chosenSound = await fetch('/.netlify/functions/chooseSound', {
+          method: 'POST',
+          body: JSON.stringify({
+            id: sound._id
+          })
+        }).then(response => response.json()).catch((err) => {
+          console.log('error choosing sound', err);
+        });
+
+        console.log('chosenSound is: ', chosenSound);
+
+        initAudioCtx(chosenSound, isInit, audioCtx).then(() => {
+          loadGraph(audioCtx);
+        });
       });
     });
 

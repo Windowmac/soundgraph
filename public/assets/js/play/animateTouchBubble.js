@@ -1,5 +1,6 @@
 const animateTouchBubble = (event) => {
-    for(let i = 0; i < 4; i++){
+    const bubbleNumber = 4;
+    for(let i = 0; i < bubbleNumber; i++){
         const x = event.clientX + 'px';
         const y = event.clientY + 'px';
         const touchBubble = document.createElement('div');
@@ -9,7 +10,7 @@ const animateTouchBubble = (event) => {
         touchBubble.style.left = x;
         touchBubble.style.top = y;
         document.getElementById('graph-box').appendChild(touchBubble);
-    }
+    };
 }
 
 export default animateTouchBubble;

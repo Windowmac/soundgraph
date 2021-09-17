@@ -1,1 +1,0 @@
-const db = {"clipName":"My unnamed clip","data":{},"date":1631557693196}; module.exports = db;
