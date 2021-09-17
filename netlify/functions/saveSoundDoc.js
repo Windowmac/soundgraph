@@ -1,32 +1,26 @@
 const mongoose = require('mongoose');
 const connect = mongoose.connect('mongodb://localhost:27017/test');
 const Sound = require('./models/Sound.js');
-const fs = require('fs');
+const multer  = require('multer');
+const storage = multer.memoryStorage()
+const upload = multer({ storage: storage })
+const getStream = require('get-stream');
 
-exports.handler = async (event, context) => {
+const express = require("express");
+const serverless = require("serverless-http");
+const app = express();
+
+app.use(express.json());
+app.use(express.urlencoded( {extended: false}));
+
+
+app.post("/.netlify/functions/saveSoundDoc/", upload.single('newSound'), async (req, res) => {
+    console.log("file in post: ", req.file);
+
     await connect;
-    const eventBody = JSON.parse(event.body);
-    console.log('event is: ', eventBody);
+    const soundData = await Sound.create({name: req.file.originalname, binData: req.file.buffer}).catch(err => {throw new Error(err)});
+    console.log('soundData is: ', soundData);
+    res.status(201).json(soundData);
+});
 
-
-        const soundData = await Sound.create({name: soundName, binData: eventBody});
-        console.log('soundData is: ', soundData);
-        return {
-            statusCode: 201,
-            body: JSON.stringify(soundData)
-        }
-
-    // const find = await Sound.find().catch(err => {console.log(err)});
-
-    // let nameNumber;
-    // while(find.length > 3){
-    //     const remove = find.pop();
-    //     nameNumber = parseInt(remove.name) + 1;
-    //     await Sound.deleteOne({name: remove.name}).catch(err => {console.log(err)});
-    // }
-    
-    // const soundName = nameNumber;
-    // const soundData = await Sound.create({name: soundName, binData: eventBody});
-    // console.log('soundData is: ', soundData);
-
-}
+exports.handler = serverless(app);

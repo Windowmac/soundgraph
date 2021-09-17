@@ -26,36 +26,37 @@ const record = (stream, chunkArr) => {
 
     const blob = new Blob(chunkArr, { type: 'audio/ogg; codecs=opus' }); //this works
     console.log('the blob is: ', blob);
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    const soundBuffer = await blob.arrayBuffer();
-    const decoded = await audioContext.decodeAudioData(soundBuffer);
-    const primaryGainControl = audioContext.createGain();
-    primaryGainControl.gain.setValueAtTime(0.5, 0);
+    // const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    // const soundBuffer = await blob.arrayBuffer();
+    // const decoded = await audioContext.decodeAudioData(soundBuffer);
+    // const primaryGainControl = audioContext.createGain();
+    // primaryGainControl.gain.setValueAtTime(0.5, 0);
 
-    const playSound = async () => {
+    // const playSound = async () => {
 
-      const audioSourceNode = audioContext.createBufferSource();
-      audioSourceNode.buffer = decoded;
+    //   const audioSourceNode = audioContext.createBufferSource();
+    //   audioSourceNode.buffer = decoded;
   
-      audioSourceNode.connect(primaryGainControl);
+    //   audioSourceNode.connect(primaryGainControl);
   
-      primaryGainControl.connect(audioContext.destination);
-      audioSourceNode.start();
-    }
+    //   primaryGainControl.connect(audioContext.destination);
+    //   audioSourceNode.start();
+    // }
 
-    document.body.addEventListener('click', () => {
-      playSound();
-    })
+    // document.body.addEventListener('click', () => {
+    //   playSound();
+    // })
 
+    const fd = new FormData();
+    fd.append('newSound', blob, clipName);
 
+    const response = await axios.post('/.netlify/functions/saveSoundDoc',  fd, { 
+      headers: {
+        'Content-Type': `multipart/form-data`,
+      },
+    });
 
-    // const response = await axios.post('/.netlify/functions/saveSoundDoc',  fd, { 
-    //   headers: {
-    //     'Content-Type': `multipart/form-data; boundary=${fd._boundary}`,
-    //   },
-    // });
-
-    // console.log('the response is: ', response);
+    console.log('the response is: ', response);
   };
 
   recordBtn.addEventListener('mousedown', (event) => {
