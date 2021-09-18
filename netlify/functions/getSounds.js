@@ -17,6 +17,8 @@ app.get("/.netlify/functions/getSounds/", async (req, res) => {
     console.log(err);
   });
 
+  console.log(sounds);
+
     res.status(200).json(sounds);
 });
 

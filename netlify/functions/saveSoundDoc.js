@@ -1,26 +1,33 @@
 const mongoose = require('mongoose');
 const connect = mongoose.connect('mongodb://localhost:27017/test');
 const Sound = require('./models/Sound.js');
-const multer  = require('multer');
-const storage = multer.memoryStorage()
+const multer = require('multer');
+const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
+const fs = require('fs');
 
-const express = require("express");
-const serverless = require("serverless-http");
+const express = require('express');
+const serverless = require('serverless-http');
 const app = express();
 
 app.use(express.json());
-app.use(express.urlencoded( {extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
-
-app.post("/.netlify/functions/saveSoundDoc/", upload.single('newSound'), async (req, res) => {
-    console.log("file in post: ", req.file);
+app.post(
+  '/.netlify/functions/saveSoundDoc/',
+  async (req, res) => {
 
     await connect;
 
-    const soundData = await Sound.create({name: req.file.originalname, binData: req.file.buffer}).catch(err => {throw new Error(err)});
+    const soundData = await Sound.create({
+      name: req.body.name,
+      url: req.body.url,
+    }).catch((err) => {
+      throw new Error(err);
+    });
     console.log('soundData is: ', soundData);
     res.status(201).json(soundData);
-});
+  }
+);
 
 exports.handler = serverless(app);

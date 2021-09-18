@@ -5,6 +5,7 @@ body {
 }
 
 .box {
+  cursor: pointer;
   border: rgb(32, 230, 32) 2px solid;
   border-radius: 30px;
   background:   linear-gradient(218deg, rgb(173, 241, 63), darkgreen),
@@ -12,6 +13,12 @@ body {
                 linear-gradient(266deg, darkgreen, green);
   color: chartreuse;
   text-shadow: 1px 0px 0px black;
+}
+
+.box:active {
+  background:   linear-gradient(100deg, rgb(15, 22, 4), rgb(63, 87, 63)),
+  linear-gradient(173deg, chartreuse, darkgreen),
+  linear-gradient(166deg, chartreuse, green);
 }
 
 .touch-bubble {
@@ -24,13 +31,10 @@ body {
   animation: scaleIn 4s infinite cubic-bezier(.36, .11, .89, .32);
 }
 
-#record {
-  cursor: pointer;
+#graph-box {
+  cursor:default
 }
 
-#play {
-  cursor: pointer;
-}
 @keyframes scaleIn {
   from {
     transform: scale(.5, .5);

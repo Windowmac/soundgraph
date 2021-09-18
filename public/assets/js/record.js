@@ -27,19 +27,16 @@ const record = (stream, chunkArr, isInit, audioCtx) => {
 
     const blob = new Blob(chunkArr, { type: 'audio/ogg; codecs=opus' }); //this works
     console.log('the blob is: ', blob);
-    const blobUrl = URL.createObjectURL(blob);
+ 
     if(document.getElementById('rec-audio')){
       document.getElementById('rec-audio').parentNode.removeChild(document.getElementById('rec-audio'));
     }
-    const audioEl = document.createElement('audio');
-    audioEl.id = 'rec-audio';
-    audioEl.src = blobUrl;
-    document.body.appendChild(audioEl);
 
     sendBlobForm(blob, clipName);
 
     const sectionEl = document.getElementById('section');
     sectionEl.parentNode.removeChild(sectionEl);
+    
     loadPlaylist(blob, isInit, audioCtx);
   };
 
@@ -47,11 +44,27 @@ const record = (stream, chunkArr, isInit, audioCtx) => {
     if (recordBtn.dataset.held === 'false') {
       recordBtn.dataset.held = 'true';
       startRecord();
+      recordBtn.textContent = 'Held';
     }
   });
 
   recordBtn.addEventListener('mouseup', () => {
     recordBtn.dataset.held === 'false';
+    recordBtn.textContent = 'Record (press and hold)';
+    stopRecord();
+  });
+
+  recordBtn.addEventListener('touchstart', () => {
+    if (recordBtn.dataset.held === 'false') {
+      recordBtn.dataset.held = 'true';
+      startRecord();
+      recordBtn.textContent = 'Held';
+    }
+  });
+
+  recordBtn.addEventListener('touchend', () => {
+    recordBtn.dataset.held === 'false';
+    recordBtn.textContent = 'Record (press and hold)';
     stopRecord();
   });
 
