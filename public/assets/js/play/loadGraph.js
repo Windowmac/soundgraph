@@ -4,7 +4,6 @@ const loadGraph = async (blob, isInit, audioCtx) => {
   if (isInit) {
     return;
   }
-  console.log('blob is: ', blob);
 
   const createGraph = () => {
     const columnsEl = document.createElement('div');
@@ -30,6 +29,13 @@ const loadGraph = async (blob, isInit, audioCtx) => {
   const graph = createGraph();
 
   audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  const WIDTH = window.innerWidth;
+  const HEIGHT = window.innerHeight;
+  const maxFreq = 500;
+  const maxVol = 0.7;
+
+  let CurX;
+  let CurY;
 
   const bufferArray = blob ? await blob.arrayBuffer() : '';
   console.log('buffer array is: ', bufferArray);
@@ -40,9 +46,8 @@ const loadGraph = async (blob, isInit, audioCtx) => {
         })
       : '';
 
-  console.log('decoded buffer is: ' ,decodedBuffer);
   const primaryGainControl = audioCtx.createGain();
-  primaryGainControl.gain.setValueAtTime(0.7, 0);
+  primaryGainControl.gain.setValueAtTime(0.5, 0);
   primaryGainControl.connect(audioCtx.destination);
 
     const playBlob = async() => {
@@ -57,16 +62,23 @@ const loadGraph = async (blob, isInit, audioCtx) => {
       })
     };
 
-    const playMiddleC = () => {
-      console.log('made it here in playmiddleC!!!');
+    const playMiddleC = (event) => {
+
+      CurX = event.pageX;
+      CurY = event.pageY;
+      console.log('X, Y are: ', CurX, CurY);
       const oscillator = audioCtx.createOscillator();
       oscillator.type = 'triangle';
-      oscillator.frequency.setValueAtTime(255, 0);
+      oscillator.frequency.setValueAtTime(((CurY/HEIGHT) * maxFreq), 0);
+      primaryGainControl.gain.value = (CurX/WIDTH) * maxVol;
       oscillator.connect(primaryGainControl);
       oscillator.start();
       graph.addEventListener('mouseup', () => {
         oscillator.stop();
-      })
+      });
+      graph.addEventListener('mousemove', () => {
+        oscillator.stop();
+      });
     };
 
   isInit = true;
@@ -76,9 +88,9 @@ const loadGraph = async (blob, isInit, audioCtx) => {
       graph.dataset.held = 'true';
       animateTouchBubble(event);
       if(blob){
-        playBlob();
+        playBlob(event);
       } else {
-        playMiddleC();
+        playMiddleC(event);
       }
     }
   });
@@ -93,6 +105,7 @@ const loadGraph = async (blob, isInit, audioCtx) => {
   graph.addEventListener('mousemove', (event) => {
     if (graph.dataset.held === "true") {
       animateTouchBubble(event);
+      blob ? playBlob(event) : playMiddleC(event);
     }
   });
 };
