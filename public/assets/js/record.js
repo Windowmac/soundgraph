@@ -34,26 +34,6 @@ const record = (stream, chunkArr, isInit, audioCtx) => {
     audioEl.id = 'rec-audio';
     audioEl.src = blobUrl;
     document.body.appendChild(audioEl);
-    // const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    // const soundBuffer = await blob.arrayBuffer();
-    // const decoded = await audioContext.decodeAudioData(soundBuffer);
-    // const primaryGainControl = audioContext.createGain();
-    // primaryGainControl.gain.setValueAtTime(0.5, 0);
-
-    // const playSound = async () => {
-
-    //   const audioSourceNode = audioContext.createBufferSource();
-    //   audioSourceNode.buffer = decoded;
-  
-    //   audioSourceNode.connect(primaryGainControl);
-  
-    //   primaryGainControl.connect(audioContext.destination);
-    //   audioSourceNode.start();
-    // }
-
-    // document.body.addEventListener('click', () => {
-    //   playSound();
-    // })
 
     // const fd = new FormData();
     // fd.append('newSound', blob, `${clipName}.ogg`);

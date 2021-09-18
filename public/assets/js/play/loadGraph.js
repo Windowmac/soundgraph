@@ -32,10 +32,11 @@ const loadGraph = async (blob, isInit, audioCtx) => {
   const WIDTH = window.innerWidth;
   const HEIGHT = window.innerHeight;
   const maxFreq = 500;
-  const maxVol = 0.7;
+  const maxVol = 1;
 
   let CurX;
   let CurY;
+
 
   const bufferArray = blob ? await blob.arrayBuffer() : '';
   console.log('buffer array is: ', bufferArray);
@@ -50,35 +51,60 @@ const loadGraph = async (blob, isInit, audioCtx) => {
   primaryGainControl.gain.setValueAtTime(0.5, 0);
   primaryGainControl.connect(audioCtx.destination);
 
-    const playBlob = async() => {
-      console.log('made it here in playblob');
-      const audioSourceNode = await audioCtx.createBufferSource();
-      audioSourceNode.loop = true;
-      audioSourceNode.buffer = decodedBuffer;
-      audioSourceNode.connect(primaryGainControl);
-      audioSourceNode.start();
-      graph.addEventListener('mouseup', () => {
-        audioSourceNode.stop();
-      })
-    };
-
-    const playMiddleC = (event) => {
-
+    const playBlob = async(event, sound) => {
       CurX = event.pageX;
       CurY = event.pageY;
-      console.log('X, Y are: ', CurX, CurY);
-      const oscillator = audioCtx.createOscillator();
-      oscillator.type = 'triangle';
-      oscillator.frequency.setValueAtTime(((CurY/HEIGHT) * maxFreq), 0);
-      primaryGainControl.gain.value = (CurX/WIDTH) * maxVol;
-      oscillator.connect(primaryGainControl);
-      oscillator.start();
-      graph.addEventListener('mouseup', () => {
-        oscillator.stop();
-      });
-      graph.addEventListener('mousemove', () => {
-        oscillator.stop();
-      });
+
+      if(sound){
+        primaryGainControl.gain.value = (CurX/WIDTH) * maxVol;
+        return sound;
+
+      } else {
+        const audioSourceNode = await audioCtx.createBufferSource();
+        audioSourceNode.loop = true;
+        audioSourceNode.buffer = decodedBuffer;
+        audioSourceNode.connect(primaryGainControl);
+        audioSourceNode.start();
+        graph.addEventListener('mouseup', () => {
+          audioSourceNode.stop();
+        });
+        graph.addEventListener('touchend', () => {
+          audioSourceNode.stop();
+        });
+        return audioSourceNode;
+      }
+      
+    };
+
+    const playMiddleC = (event, sound) => {
+      CurX = event.pageX;
+      CurY = event.pageY;
+
+      if(sound){
+        sound.frequency.setValueAtTime(((CurY/HEIGHT) * maxFreq), audioCtx.currentTime);
+        primaryGainControl.gain.value = (CurX/WIDTH) * maxVol;
+        return sound;
+      } else {
+        console.log('X, Y are: ', CurX, CurY);
+        const oscillator = audioCtx.createOscillator();
+        oscillator.type = 'triangle';
+        oscillator.frequency.setValueAtTime(((CurY/HEIGHT) * maxFreq), audioCtx.currentTime);
+        primaryGainControl.gain.value = (CurX/WIDTH) * maxVol;
+        oscillator.connect(primaryGainControl);
+        oscillator.start();
+        graph.addEventListener('mouseup', () => {
+          primaryGainControl.gain.setValueAtTime(0.01, audioCtx.currentTime);
+          oscillator.stop();
+        });
+        graph.addEventListener('touchend', () => {
+          primaryGainControl.gain.setValueAtTime(0.01, audioCtx.currentTime);
+          oscillator.stop();
+        });
+        graph.addEventListener('touchmove', () => {
+          oscillator.frequency.setValueAtTime(((CurY/HEIGHT) * maxFreq), audioCtx.currentTime);
+        });
+        return oscillator;
+      }    
     };
 
   isInit = true;
@@ -87,11 +113,14 @@ const loadGraph = async (blob, isInit, audioCtx) => {
     if (graph.dataset.held === 'false') {
       graph.dataset.held = 'true';
       animateTouchBubble(event);
-      if(blob){
-        playBlob(event);
-      } else {
-        playMiddleC(event);
-      }
+      const sound = blob ? playBlob(event) : playMiddleC(event);
+
+      graph.addEventListener('mousemove', (event) => {
+        if (graph.dataset.held === "true") {
+          animateTouchBubble(event);
+          blob ? playBlob(event, sound) : playMiddleC(event, sound);
+        }
+      });
     }
   });
 
@@ -102,12 +131,22 @@ const loadGraph = async (blob, isInit, audioCtx) => {
     });
   });
 
-  graph.addEventListener('mousemove', (event) => {
-    if (graph.dataset.held === "true") {
+  graph.addEventListener('touchstart', (event) => {
+    if (graph.dataset.held === 'false') {
+      graph.dataset.held = 'true';
       animateTouchBubble(event);
-      blob ? playBlob(event) : playMiddleC(event);
+      const sound = blob ? playBlob(event) : playMiddleC(event);
+
+      graph.addEventListener('touchmove', (event) => {
+        if (graph.dataset.held === "true") {
+          animateTouchBubble(event);
+          blob ? playBlob(event) : playMiddleC(event, sound);
+          sound.frequency.setValueAtTime(((CurY/HEIGHT) * maxFreq), audioCtx.currentTime);
+        }
+      });
     }
   });
+
 };
 
 export default loadGraph;
