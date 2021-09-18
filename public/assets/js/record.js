@@ -1,6 +1,6 @@
+import loadPlaylist from "./play/loadPlaylist.js";
 
-
-const record = (stream, chunkArr) => {
+const record = (stream, chunkArr, isInit, audioCtx) => {
   const recordBtn = document.getElementById('record');
   const mediaRecorder = new MediaRecorder(stream);
 
@@ -26,6 +26,14 @@ const record = (stream, chunkArr) => {
 
     const blob = new Blob(chunkArr, { type: 'audio/ogg; codecs=opus' }); //this works
     console.log('the blob is: ', blob);
+    const blobUrl = URL.createObjectURL(blob);
+    if(document.getElementById('rec-audio')){
+      document.getElementById('rec-audio').parentNode.removeChild(document.getElementById('rec-audio'));
+    }
+    const audioEl = document.createElement('audio');
+    audioEl.id = 'rec-audio';
+    audioEl.src = blobUrl;
+    document.body.appendChild(audioEl);
     // const audioContext = new (window.AudioContext || window.webkitAudioContext)();
     // const soundBuffer = await blob.arrayBuffer();
     // const decoded = await audioContext.decodeAudioData(soundBuffer);
@@ -47,16 +55,17 @@ const record = (stream, chunkArr) => {
     //   playSound();
     // })
 
-    const fd = new FormData();
-    fd.append('newSound', blob, clipName);
+    // const fd = new FormData();
+    // fd.append('newSound', blob, `${clipName}.ogg`);
 
-    const response = await axios.post('/.netlify/functions/saveSoundDoc',  fd, { 
-      headers: {
-        'Content-Type': `multipart/form-data`,
-      },
-    });
+    // const response = await axios.post('/.netlify/functions/saveSoundDoc',  fd, {
+    //   headers: {'Content-Type': 'multipart/form-data'}
+    // }).catch(err => {console.log(err)});
 
-    console.log('the response is: ', response);
+    // console.log('the response is: ', response);
+    const sectionEl = document.getElementById('section');
+    sectionEl.parentNode.removeChild(sectionEl);
+    loadPlaylist(blob, isInit, audioCtx);
   };
 
   recordBtn.addEventListener('mousedown', (event) => {

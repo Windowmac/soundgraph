@@ -22,7 +22,7 @@ if (navigator.mediaDevices.getUserMedia) {
   playBtn.addEventListener('click', () => {
     const sectionEl = document.getElementById('section');
     sectionEl.parentNode.removeChild(sectionEl);
-    loadPlaylist(isInit, audioCtx);
+    loadPlaylist('', isInit, audioCtx);
   });
 
 } else {
