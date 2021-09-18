@@ -1,5 +1,4 @@
 import loadGraph from './loadGraph.js';
-import initAudioCtx from './initAudioCtx.js';
 
 const loadPlaylist = async (blob, isInit, audioCtx) => {
   const sectionEl = document.createElement('div');

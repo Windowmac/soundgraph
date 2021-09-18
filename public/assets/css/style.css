@@ -24,6 +24,13 @@ body {
   animation: scaleIn 4s infinite cubic-bezier(.36, .11, .89, .32);
 }
 
+#record {
+  cursor: pointer;
+}
+
+#play {
+  cursor: pointer;
+}
 @keyframes scaleIn {
   from {
     transform: scale(.5, .5);

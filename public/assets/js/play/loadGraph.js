@@ -1,30 +1,10 @@
 import animateTouchBubble from './animateTouchBubble.js';
+import createGraph from './createGraph.js';
 
 const loadGraph = async (blob, isInit, audioCtx) => {
   if (isInit) {
     return;
   }
-
-  const createGraph = () => {
-    const columnsEl = document.createElement('div');
-    columnsEl.classList.add('columns', 'is-vcentered');
-    columnsEl.style.paddingTop = '18px';
-    const column = document.createElement('div');
-    column.classList.add('column', 'is-10', 'is-offset-1');
-    const graphBox = document.createElement('div');
-    graphBox.id = 'graph-box';
-    graphBox.classList.add('box');
-    graphBox.style.height = '95vh';
-    graphBox.style.background =
-      'url(/assets/images/graph-bg-cropped.png) repeat center center';
-    graphBox.dataset.held = 'false';
-
-    document.body.appendChild(columnsEl);
-    columnsEl.appendChild(column);
-    column.appendChild(graphBox);
-
-    return graphBox;
-  };
 
   const graph = createGraph();
 
@@ -36,7 +16,6 @@ const loadGraph = async (blob, isInit, audioCtx) => {
 
   let CurX;
   let CurY;
-
 
   const bufferArray = blob ? await blob.arrayBuffer() : '';
   console.log('buffer array is: ', bufferArray);

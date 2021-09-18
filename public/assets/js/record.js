@@ -1,4 +1,5 @@
 import loadPlaylist from "./play/loadPlaylist.js";
+import sendBlobForm from "./play/sendBlobForm.js";
 
 const record = (stream, chunkArr, isInit, audioCtx) => {
   const recordBtn = document.getElementById('record');
@@ -35,14 +36,8 @@ const record = (stream, chunkArr, isInit, audioCtx) => {
     audioEl.src = blobUrl;
     document.body.appendChild(audioEl);
 
-    // const fd = new FormData();
-    // fd.append('newSound', blob, `${clipName}.ogg`);
+    sendBlobForm(blob, clipName);
 
-    // const response = await axios.post('/.netlify/functions/saveSoundDoc',  fd, {
-    //   headers: {'Content-Type': 'multipart/form-data'}
-    // }).catch(err => {console.log(err)});
-
-    // console.log('the response is: ', response);
     const sectionEl = document.getElementById('section');
     sectionEl.parentNode.removeChild(sectionEl);
     loadPlaylist(blob, isInit, audioCtx);
@@ -59,6 +54,7 @@ const record = (stream, chunkArr, isInit, audioCtx) => {
     recordBtn.dataset.held === 'false';
     stopRecord();
   });
+
 };
 
 export default record;
