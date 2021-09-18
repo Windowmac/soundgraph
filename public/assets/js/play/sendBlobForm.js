@@ -4,13 +4,13 @@ const sendBlobForm = async (blob, clipName) => {
   // const fd = new FormData();
   // fd.append('newSound', blob, `${clipName}.ogg`);
   const app = firebase.initializeApp({
-    apiKey: "AIzaSyCA8oDm2UjB_mjXzFAqD5_TrfcTa608h0w",
-    authDomain: "kletterstieg.firebaseapp.com",
-    projectId: "kletterstieg",
-    storageBucket: "kletterstieg.appspot.com",
-    messagingSenderId: "616139153956",
-    appId: "1:616139153956:web:61bacc3fdf104ccb7e2eb1",
-    measurementId: "G-7T5KXQ1WE6"
+    apiKey: "AIzaSyA7r_v_j9WQGGeLtC0UFbmQqZPlI057hlA",
+    authDomain: "windowmac-soundgraph.firebaseapp.com",
+    projectId: "windowmac-soundgraph",
+    storageBucket: "windowmac-soundgraph.appspot.com",
+    messagingSenderId: "580941357939",
+    appId: "1:580941357939:web:2da9778500fd9b6bc79b06",
+    measurementId: "G-JZ6QSS4RGH"
   });
   const storage = app.storage();
   const handleSnapshot = (snapshot) =>
@@ -24,15 +24,6 @@ const sendBlobForm = async (blob, clipName) => {
       .catch((err) => console.log(err));
 
 uploadSound(storage, blob);
-//   const response = await axios
-//     .post('/.netlify/functions/saveSoundDoc', blob, {
-//       headers: { 'Content-Type': 'blob' },
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
-
-//   console.log('the response is: ', response);
 };
 
 export default sendBlobForm;

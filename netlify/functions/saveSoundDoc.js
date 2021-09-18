@@ -3,8 +3,6 @@ const connect = mongoose.connect('mongodb://localhost:27017/test');
 const Sound = require('./models/Sound.js');
 const multer = require('multer');
 const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
-const fs = require('fs');
 
 const express = require('express');
 const serverless = require('serverless-http');
