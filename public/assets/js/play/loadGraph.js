@@ -65,7 +65,7 @@ const loadGraph = async (blob, isInit, audioCtx) => {
   const playMiddleC = (event, sound) => {
     let CurX;
     let CurY;
-    const currentTouchIndex = event.touches.length - 1;
+    const currentTouchIndex = event.touches ? event.touches.length - 1 : 0;
     if (event.touches) {
       CurX = event.touches[currentTouchIndex].clientX;
       CurY = event.touches[currentTouchIndex].clientY;
@@ -73,78 +73,71 @@ const loadGraph = async (blob, isInit, audioCtx) => {
       CurX = event.pageX;
       CurY = event.pageY;
     }
-    if(sound){
+    if (sound) {
       graph.addEventListener('touchmove', () => {
-        console.log('sound freq on 77 is: ', sound)
-        sound.frequency.value = 
-          (currentTouchIndex - 1 / HEIGHT) * maxFreq,
+        console.log('sound freq on 77 is: ', sound);
+        (sound.frequency.value = (currentTouchIndex - 1 / HEIGHT) * maxFreq),
           audioCtx.currentTime;
-        console.log('sound freq on 113 is: ', sound.frequency.value)
+        console.log('sound freq on 113 is: ', sound.frequency.value);
       });
     }
-      console.log('X, Y are: ', CurX, CurY);
-      const oscillator = audioCtx.createOscillator();
-      oscillator.type = 'triangle';
-      oscillator.frequency.setValueAtTime(
-        (CurY / HEIGHT) * maxFreq,
+    console.log('X, Y are: ', CurX, CurY);
+    const oscillator = audioCtx.createOscillator();
+    oscillator.type = 'triangle';
+    oscillator.frequency.setValueAtTime(
+      (CurY / HEIGHT) * maxFreq,
+      audioCtx.currentTime
+    );
+    const oscillatorGain = audioCtx.createGain();
+
+    oscillatorGain.gain.setValueAtTime(CurX / WIDTH, audioCtx.currentTime);
+    oscillator.connect(oscillatorGain);
+    oscillatorGain.connect(primaryGainControl);
+    oscillator.start();
+    graph.addEventListener('mouseup', () => {
+      oscillatorGain.gain.exponentialRampToValueAtTime(
+        0.01,
         audioCtx.currentTime
-      );      
-      const oscillatorGain = audioCtx.createGain();
-
-      oscillatorGain.gain.setValueAtTime(CurX / WIDTH, audioCtx.currentTime);
-      oscillator.connect(oscillatorGain);
-      oscillatorGain.connect(primaryGainControl);
-      oscillator.start();
-      graph.addEventListener('mouseup', () => {
-        oscillatorGain.gain.exponentialRampToValueAtTime(
-          0.01,
-          audioCtx.currentTime
-        );
-        oscillator.stop();
+      );
+      oscillator.stop();
+    });
+    graph.addEventListener('touchend', () => {
+      // graph.dataset.held = 'false';
+      [...document.getElementsByClassName('touch-bubble')].forEach((bubble) => {
+        bubble.parentNode.removeChild(bubble);
       });
-      graph.addEventListener('touchend', () => {
-        // graph.dataset.held = 'false';
-        [...document.getElementsByClassName('touch-bubble')].forEach(
-          (bubble) => {
-            bubble.parentNode.removeChild(bubble);
-          }
-        );
-        oscillatorGain.gain.exponentialRampToValueAtTime(
-          0.01,
-          audioCtx.currentTime
-        );
-        oscillator.stop();
-      });
+      oscillatorGain.gain.exponentialRampToValueAtTime(
+        0.01,
+        audioCtx.currentTime
+      );
+      oscillator.stop();
+    });
 
-      graph.addEventListener('touchleave', () => {
-        // graph.dataset.held = 'false';
-        [...document.getElementsByClassName('touch-bubble')].forEach(
-          (bubble) => {
-            bubble.parentNode.removeChild(bubble);
-          }
-        );
-        oscillatorGain.gain.exponentialRampToValueAtTime(
-          0.01,
-          audioCtx.currentTime
-        );
-        oscillator.stop();
+    graph.addEventListener('touchleave', () => {
+      // graph.dataset.held = 'false';
+      [...document.getElementsByClassName('touch-bubble')].forEach((bubble) => {
+        bubble.parentNode.removeChild(bubble);
       });
+      oscillatorGain.gain.exponentialRampToValueAtTime(
+        0.01,
+        audioCtx.currentTime
+      );
+      oscillator.stop();
+    });
 
-      graph.addEventListener('touchcancel', () => {
-        // graph.dataset.held = 'false';
-        [...document.getElementsByClassName('touch-bubble')].forEach(
-          (bubble) => {
-            bubble.parentNode.removeChild(bubble);
-          }
-        );
-        oscillatorGain.gain.exponentialRampToValueAtTime(
-          0.01,
-          audioCtx.currentTime
-        );
-        oscillator.stop();
+    graph.addEventListener('touchcancel', () => {
+      // graph.dataset.held = 'false';
+      [...document.getElementsByClassName('touch-bubble')].forEach((bubble) => {
+        bubble.parentNode.removeChild(bubble);
       });
+      oscillatorGain.gain.exponentialRampToValueAtTime(
+        0.01,
+        audioCtx.currentTime
+      );
+      oscillator.stop();
+    });
 
-      return oscillator;
+    return oscillator;
   };
 
   isInit = true;
@@ -153,12 +146,18 @@ const loadGraph = async (blob, isInit, audioCtx) => {
     if (graph.dataset.held === 'false') {
       graph.dataset.held = 'true';
       animateTouchBubble(event);
-      const sound = blob ? playBlob(event) : playMiddleC(event);
+      const sounds = [];
+      console.log(event);
+      for (let i = 0; i < 1; i++) {
+        sounds.push(blob ? playBlob(event) : playMiddleC(event));
+      }
 
       graph.addEventListener('mousemove', (event) => {
-        if (graph.dataset.held === 'true') {
-          //animateTouchBubble(event);
-          blob ? playBlob(event, sound) : playMiddleC(event, sound);
+        for (let i = 0; i < sounds.length; i++) {
+          sounds[i].frequency.setValueAtTime(
+            event.clientY,
+            audioCtx.currentTime
+          );
         }
       });
     }
@@ -177,20 +176,17 @@ const loadGraph = async (blob, isInit, audioCtx) => {
     animateTouchBubble(event);
     const sounds = [];
     console.log(event);
-    for(let i = 0; i < event.touches.length; i++){
-      sounds.push(blob ? playBlob(event) : playMiddleC(event))
+    for (let i = 0; i < event.touches.length; i++) {
+      sounds.push(blob ? playBlob(event) : playMiddleC(event));
     }
 
     graph.addEventListener('touchmove', (event) => {
-      for(let i = 0; i < sounds.length; i++){
-        sounds[i].frequency.setValueAtTime(event.touches[i].clientY, audioCtx.currentTime);
+      for (let i = 0; i < sounds.length; i++) {
+        sounds[i].frequency.setValueAtTime(
+          event.touches[i].clientY,
+          audioCtx.currentTime
+        );
       }
-      // sound.frequency.setValueAtTime(
-      //   TouchList.length > 1 
-      //   ? (event2.touches[event2.touches.length - 2].clientY / HEIGHT) * maxFreq
-      //   : (event2.touches[event2.touches.length - 1].clientY / HEIGHT) * maxFreq,
-      //   audioCtx.currentTime
-      // );
     });
   });
 };
