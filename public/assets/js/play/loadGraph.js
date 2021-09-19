@@ -21,7 +21,7 @@ const loadGraph = async (blob, isInit, audioCtx) => {
   primaryGainControl.gain.setValueAtTime(1, 0);
   primaryGainControl.connect(audioCtx.destination);
 
-  console.log(blob ? blob : '');
+  console.log('sound is: ', blob ? blob : '');
 
   const fetchedFile = blob ? await fetch(blob.data.url, {
     headers: {
