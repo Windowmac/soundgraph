@@ -1,8 +1,8 @@
 const animateTouchBubble = (event) => {
     const bubbleNumber = 4;
     for(let i = 0; i < bubbleNumber; i++){
-        const x = event.clientX + 'px';
-        const y = event.clientY + 'px';
+        const x = event.touches ? event.touches[0].clientX + 'px' : event.clientX + 'px';
+        const y = event.touches ? event.touches[0].clientY + 'px' :event.clientY + 'px';
         const touchBubble = document.createElement('div');
         touchBubble.classList.add('touch-bubble');
         touchBubble.style.animationDelay = i - 3 + 's';

@@ -138,23 +138,23 @@ const loadGraph = async (blob, isInit, audioCtx) => {
 
   graph.addEventListener('touchstart', (event) => {
     event.preventDefault();
-    if (graph.dataset.held === 'false') {
-      graph.dataset.held = 'true';
+    // if (graph.dataset.held === 'false') {
+    //   graph.dataset.held = 'true';
       console.log(event);
       animateTouchBubble(event);
       const sound = blob ? playBlob(event) : playMiddleC(event);
 
       graph.addEventListener('touchmove', (event) => {
-        if (graph.dataset.held === 'true') {
+        // if (graph.dataset.held === 'true') {
           animateTouchBubble(event);
           blob ? playBlob(event) : playMiddleC(event, sound);
           sound.frequency.setValueAtTime(
             (CurY / HEIGHT) * maxFreq,
             audioCtx.currentTime
           );
-        }
+        //}
       });
-    }
+    //}
   });
 };
 
