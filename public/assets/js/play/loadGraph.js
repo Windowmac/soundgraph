@@ -63,8 +63,8 @@ const loadGraph = async (blob, isInit, audioCtx) => {
 
   const playMiddleC = (event, sound) => {
     if (event.touches) {
-      CurX = event.touches[0].clientX;
-      CurY = event.touches[0].clientY;
+      CurX = event.touches[event.touches.length - 1].clientX;
+      CurY = event.touches[event.touches.length - 1].clientY;
     } else {
       CurX = event.pageX;
       CurY = event.pageY;
@@ -122,7 +122,7 @@ const loadGraph = async (blob, isInit, audioCtx) => {
 
       graph.addEventListener('mousemove', (event) => {
         if (graph.dataset.held === 'true') {
-          animateTouchBubble(event);
+          //animateTouchBubble(event);
           blob ? playBlob(event, sound) : playMiddleC(event, sound);
         }
       });
@@ -146,7 +146,7 @@ const loadGraph = async (blob, isInit, audioCtx) => {
 
       graph.addEventListener('touchmove', (event) => {
         // if (graph.dataset.held === 'true') {
-          animateTouchBubble(event);
+          //animateTouchBubble(event);
           blob ? playBlob(event) : playMiddleC(event, sound);
           sound.frequency.setValueAtTime(
             (CurY / HEIGHT) * maxFreq,
