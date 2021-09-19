@@ -14,26 +14,27 @@ const loadGraph = async (blob, isInit, audioCtx) => {
   const maxFreq = 500;
   const maxVol = 1;
 
-  let CurX;
-  let CurY;
-
   const primaryGainControl = audioCtx.createGain();
   primaryGainControl.gain.setValueAtTime(1, 0);
   primaryGainControl.connect(audioCtx.destination);
 
   console.log('sound is: ', blob ? blob : '');
 
-  const fetchedFile = blob ? await fetch(blob.data.url, {
-    headers: {
-      "origin": "localhost"
-    }
-  }) : '';
+  const fetchedFile = blob
+    ? await fetch(blob.data.url, {
+        headers: {
+          origin: 'localhost',
+        },
+      })
+    : '';
   const bufferArray = blob ? fetchedFile.arrayBuffer() : '';
   const decodedBuffer = bufferArray
     ? await audioCtx.decodeAudioData(bufferArray)
     : '';
 
   const playBlob = async (event, sound) => {
+    let CurX;
+    let CurY;
     if (event.touches.length) {
       CurX = event.touches[0].clientX;
       CurY = event.touches[0].clientY;
@@ -62,54 +63,60 @@ const loadGraph = async (blob, isInit, audioCtx) => {
   };
 
   const playMiddleC = (event, sound) => {
+    let CurX;
+    let CurY;
+    const currentTouchIndex = event.touches.length - 1;
     if (event.touches) {
-      CurX = event.touches[event.touches.length - 1].clientX;
-      CurY = event.touches[event.touches.length - 1].clientY;
+      CurX = event.touches[currentTouchIndex].clientX;
+      CurY = event.touches[currentTouchIndex].clientY;
     } else {
       CurX = event.pageX;
       CurY = event.pageY;
     }
-
-    if (sound) {
-      sound.frequency.setValueAtTime(
-        (CurY / HEIGHT) * maxFreq,
-        audioCtx.currentTime
-      );
-      primaryGainControl.gain.value = (CurX / WIDTH) * maxVol;
-      return sound;
-    } else {
+    if(sound){
+      graph.addEventListener('touchmove', () => {
+        console.log('sound freq on 77 is: ', sound)
+        sound.frequency.value = 
+          (currentTouchIndex - 1 / HEIGHT) * maxFreq,
+          audioCtx.currentTime;
+        console.log('sound freq on 113 is: ', sound.frequency.value)
+      });
+    }
       console.log('X, Y are: ', CurX, CurY);
       const oscillator = audioCtx.createOscillator();
       oscillator.type = 'triangle';
       oscillator.frequency.setValueAtTime(
         (CurY / HEIGHT) * maxFreq,
         audioCtx.currentTime
-      );
-      primaryGainControl.gain.value = (CurX / WIDTH) * maxVol;
-      oscillator.connect(primaryGainControl);
+      );      
+      const oscillatorGain = audioCtx.createGain();
+
+      oscillatorGain.gain.setValueAtTime(CurX / WIDTH, audioCtx.currentTime);
+      oscillator.connect(oscillatorGain);
+      oscillatorGain.connect(primaryGainControl);
       oscillator.start();
       graph.addEventListener('mouseup', () => {
-        primaryGainControl.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.02);
+        oscillatorGain.gain.exponentialRampToValueAtTime(
+          0.01,
+          audioCtx.currentTime
+        );
         oscillator.stop();
       });
       graph.addEventListener('touchend', () => {
-        graph.dataset.held = 'false';
+        // graph.dataset.held = 'false';
         [...document.getElementsByClassName('touch-bubble')].forEach(
           (bubble) => {
             bubble.parentNode.removeChild(bubble);
           }
         );
-        primaryGainControl.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.02);
-        oscillator.stop();
-      });
-      graph.addEventListener('touchmove', () => {
-        oscillator.frequency.setValueAtTime(
-          (CurY / HEIGHT) * maxFreq,
+        oscillatorGain.gain.exponentialRampToValueAtTime(
+          0.01,
           audioCtx.currentTime
         );
+        oscillator.stop();
       });
+
       return oscillator;
-    }
   };
 
   isInit = true;
@@ -138,23 +145,19 @@ const loadGraph = async (blob, isInit, audioCtx) => {
 
   graph.addEventListener('touchstart', (event) => {
     event.preventDefault();
-    // if (graph.dataset.held === 'false') {
-    //   graph.dataset.held = 'true';
-      console.log(event);
-      animateTouchBubble(event);
-      const sound = blob ? playBlob(event) : playMiddleC(event);
 
-      graph.addEventListener('touchmove', (event) => {
-        // if (graph.dataset.held === 'true') {
-          //animateTouchBubble(event);
-          blob ? playBlob(event) : playMiddleC(event, sound);
-          sound.frequency.setValueAtTime(
-            (CurY / HEIGHT) * maxFreq,
-            audioCtx.currentTime
-          );
-        //}
-      });
-    //}
+    animateTouchBubble(event);
+    const sound = blob ? playBlob(event) : playMiddleC(event);
+
+    graph.addEventListener('touchmove', (event2) => {
+      // blob ? playBlob(event) : playMiddleC(event, sound);
+      // sound.frequency.setValueAtTime(
+      //   TouchList.length > 1 
+      //   ? (event2.touches[event2.touches.length - 2].clientY / HEIGHT) * maxFreq
+      //   : (event2.touches[event2.touches.length - 1].clientY / HEIGHT) * maxFreq,
+      //   audioCtx.currentTime
+      // );
+    });
   });
 };
 
