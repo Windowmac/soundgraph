@@ -116,6 +116,34 @@ const loadGraph = async (blob, isInit, audioCtx) => {
         oscillator.stop();
       });
 
+      graph.addEventListener('touchleave', () => {
+        // graph.dataset.held = 'false';
+        [...document.getElementsByClassName('touch-bubble')].forEach(
+          (bubble) => {
+            bubble.parentNode.removeChild(bubble);
+          }
+        );
+        oscillatorGain.gain.exponentialRampToValueAtTime(
+          0.01,
+          audioCtx.currentTime
+        );
+        oscillator.stop();
+      });
+
+      graph.addEventListener('touchcancel', () => {
+        // graph.dataset.held = 'false';
+        [...document.getElementsByClassName('touch-bubble')].forEach(
+          (bubble) => {
+            bubble.parentNode.removeChild(bubble);
+          }
+        );
+        oscillatorGain.gain.exponentialRampToValueAtTime(
+          0.01,
+          audioCtx.currentTime
+        );
+        oscillator.stop();
+      });
+
       return oscillator;
   };
 
@@ -147,10 +175,16 @@ const loadGraph = async (blob, isInit, audioCtx) => {
     event.preventDefault();
 
     animateTouchBubble(event);
-    const sound = blob ? playBlob(event) : playMiddleC(event);
+    const sounds = [];
+    console.log(event);
+    for(let i = 0; i < event.touches.length; i++){
+      sounds.push(blob ? playBlob(event) : playMiddleC(event))
+    }
 
-    graph.addEventListener('touchmove', (event2) => {
-      // blob ? playBlob(event) : playMiddleC(event, sound);
+    graph.addEventListener('touchmove', (event) => {
+      for(let i = 0; i < sounds.length; i++){
+        sounds[i].frequency.setValueAtTime(event.touches[i].clientY, audioCtx.currentTime);
+      }
       // sound.frequency.setValueAtTime(
       //   TouchList.length > 1 
       //   ? (event2.touches[event2.touches.length - 2].clientY / HEIGHT) * maxFreq
