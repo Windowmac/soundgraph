@@ -89,7 +89,7 @@ const loadGraph = async (blob, isInit, audioCtx) => {
       oscillator.connect(primaryGainControl);
       oscillator.start();
       graph.addEventListener('mouseup', () => {
-        primaryGainControl.gain.setValueAtTime(0.01, audioCtx.currentTime);
+        primaryGainControl.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.02);
         oscillator.stop();
       });
       graph.addEventListener('touchend', () => {
@@ -99,7 +99,7 @@ const loadGraph = async (blob, isInit, audioCtx) => {
             bubble.parentNode.removeChild(bubble);
           }
         );
-        primaryGainControl.gain.setValueAtTime(0.01, audioCtx.currentTime);
+        primaryGainControl.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.02);
         oscillator.stop();
       });
       graph.addEventListener('touchmove', () => {
