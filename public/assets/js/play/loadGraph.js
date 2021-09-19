@@ -23,7 +23,11 @@ const loadGraph = async (blob, isInit, audioCtx) => {
 
   console.log(blob ? blob : '');
 
-  const fetchedFile = blob ? await fetch(blob.data.url) : '';
+  const fetchedFile = blob ? await fetch(blob.data.url, {
+    headers: {
+      "origin": "localhost"
+    }
+  }) : '';
   const bufferArray = blob ? fetchedFile.arrayBuffer() : '';
   const decodedBuffer = bufferArray
     ? await audioCtx.decodeAudioData(bufferArray)
