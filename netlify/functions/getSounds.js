@@ -19,7 +19,7 @@ app.get("/.netlify/functions/getSounds/", async (req, res) => {
 
   console.log(sounds);
 
-    res.status(200).json(sounds);
+    res.status(200).send(sounds);
 });
 
 exports.handler = serverless(app);

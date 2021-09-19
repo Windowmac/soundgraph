@@ -21,17 +21,22 @@ const loadGraph = async (blob, isInit, audioCtx) => {
   primaryGainControl.gain.setValueAtTime(1, 0);
   primaryGainControl.connect(audioCtx.destination);
 
-  console.log(blob ? blob.data.url : '');
+  console.log(blob ? blob : '');
 
-  const soundUrl = blob ? await fetch(blob.data.url) : '';
-  const bufferArray = soundUrl ? await soundUrl.arrayBuffer() : '';
+  const fetchedFile = blob ? await fetch(blob.data.url) : '';
+  const bufferArray = blob ? fetchedFile.arrayBuffer() : '';
   const decodedBuffer = bufferArray
     ? await audioCtx.decodeAudioData(bufferArray)
     : '';
 
   const playBlob = async (event, sound) => {
-    CurX = event.pageX;
-    CurY = event.pageY;
+    if (event.touches.length) {
+      CurX = event.touches[0].clientX;
+      CurY = event.touches[0].clientY;
+    } else {
+      CurX = event.pageX;
+      CurY = event.pageY;
+    }
 
     if (sound) {
       primaryGainControl.gain.value = (CurX / WIDTH) * maxVol;
@@ -53,8 +58,13 @@ const loadGraph = async (blob, isInit, audioCtx) => {
   };
 
   const playMiddleC = (event, sound) => {
-    CurX = event.pageX;
-    CurY = event.pageY;
+    if (event.touches) {
+      CurX = event.touches[0].clientX;
+      CurY = event.touches[0].clientY;
+    } else {
+      CurX = event.pageX;
+      CurY = event.pageY;
+    }
 
     if (sound) {
       sound.frequency.setValueAtTime(
@@ -79,6 +89,12 @@ const loadGraph = async (blob, isInit, audioCtx) => {
         oscillator.stop();
       });
       graph.addEventListener('touchend', () => {
+        graph.dataset.held = 'false';
+        [...document.getElementsByClassName('touch-bubble')].forEach(
+          (bubble) => {
+            bubble.parentNode.removeChild(bubble);
+          }
+        );
         primaryGainControl.gain.setValueAtTime(0.01, audioCtx.currentTime);
         oscillator.stop();
       });
@@ -117,8 +133,10 @@ const loadGraph = async (blob, isInit, audioCtx) => {
   });
 
   graph.addEventListener('touchstart', (event) => {
+    event.preventDefault();
     if (graph.dataset.held === 'false') {
       graph.dataset.held = 'true';
+      console.log(event);
       animateTouchBubble(event);
       const sound = blob ? playBlob(event) : playMiddleC(event);
 
