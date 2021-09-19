@@ -40,33 +40,33 @@ const record = (stream, chunkArr, isInit, audioCtx) => {
     loadPlaylist(blob, isInit, audioCtx);
   };
 
-  recordBtn.addEventListener('mousedown', (event) => {
-    if (recordBtn.dataset.held === 'false') {
-      recordBtn.dataset.held = 'true';
-      startRecord();
-      recordBtn.textContent = 'Held';
-    }
-  });
+  // recordBtn.addEventListener('mousedown', (event) => {
+  //   if (recordBtn.dataset.held === 'false') {
+  //     recordBtn.dataset.held = 'true';
+  //     startRecord();
+  //     recordBtn.textContent = 'Held';
+  //   }
+  // });
 
-  recordBtn.addEventListener('mouseup', () => {
-    recordBtn.dataset.held === 'false';
-    recordBtn.textContent = 'Record (press and hold)';
-    stopRecord();
-  });
+  // recordBtn.addEventListener('mouseup', () => {
+  //   recordBtn.dataset.held === 'false';
+  //   recordBtn.textContent = 'Record (press and hold)';
+  //   stopRecord();
+  // });
 
-  recordBtn.addEventListener('touchstart', () => {
-    if (recordBtn.dataset.held === 'false') {
-      recordBtn.dataset.held = 'true';
-      startRecord();
-      recordBtn.textContent = 'Held';
-    }
-  });
+  // recordBtn.addEventListener('touchstart', () => {
+  //   if (recordBtn.dataset.held === 'false') {
+  //     recordBtn.dataset.held = 'true';
+  //     startRecord();
+  //     recordBtn.textContent = 'Held';
+  //   }
+  // });
 
-  recordBtn.addEventListener('touchend', () => {
-    recordBtn.dataset.held === 'false';
-    recordBtn.textContent = 'Record (press and hold)';
-    stopRecord();
-  });
+  // recordBtn.addEventListener('touchend', () => {
+  //   recordBtn.dataset.held === 'false';
+  //   recordBtn.textContent = 'Record (press and hold)';
+  //   stopRecord();
+  // });
 
 };
 
