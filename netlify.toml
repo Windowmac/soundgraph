@@ -2,3 +2,6 @@
   command = "# no build command"
   functions = "netlify/functions"
   publish = "public"
+
+[context.production]
+  environment = { MONGO_DB_URI="mongodb+srv://Sk3l3tal0ne:Sk3l3tal0ne@cluster0.ujbj0.mongodb.net/myFirstDatabase?retryWrites=true&w=majority" }
