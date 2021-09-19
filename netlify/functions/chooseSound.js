@@ -12,6 +12,7 @@ app.use(express.urlencoded( {extended: false}));
 
 app.post('/.netlify/functions/chooseSound', async (req, res) => {
   const context = req.apiGateway.context;
+  console.log(req);
   context.callbackWaitsForEmptyEventLoop = false;
 
   await connect;
@@ -22,4 +23,4 @@ app.post('/.netlify/functions/chooseSound', async (req, res) => {
   res.status(200).json(sound);
 })
 
-exports.handler = serverless(app);
+exports.handler = (event, context) => serverless(app);
