@@ -9,8 +9,8 @@ const loadGraph = async (blob, isInit, audioCtx) => {
   const graph = createGraph();
 
   audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  const WIDTH = window.innerWidth;
-  const HEIGHT = window.innerHeight;
+  const WIDTH = graph.clientWidth;
+  const HEIGHT = graph.clientHeight;
   const maxFreq = 500;
   const maxVol = 1;
 
