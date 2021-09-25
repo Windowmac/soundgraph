@@ -73,15 +73,7 @@ const loadGraph = async (blob, isInit, audioCtx) => {
       CurX = event.pageX;
       CurY = event.pageY;
     }
-    if (sound) {
-      graph.addEventListener('touchmove', () => {
-        console.log('sound freq on 77 is: ', sound);
-        (sound.frequency.value = (currentTouchIndex - 1 / HEIGHT) * maxFreq),
-          audioCtx.currentTime;
-        console.log('sound freq on 113 is: ', sound.frequency.value);
-      });
-    }
-    console.log('X, Y are: ', CurX, CurY);
+
     const oscillator = audioCtx.createOscillator();
     oscillator.type = 'triangle';
     oscillator.frequency.setValueAtTime(
@@ -90,7 +82,7 @@ const loadGraph = async (blob, isInit, audioCtx) => {
     );
     const oscillatorGain = audioCtx.createGain();
 
-    oscillatorGain.gain.setValueAtTime(CurX / WIDTH, audioCtx.currentTime);
+    oscillatorGain.gain.setValueAtTime((CurX / WIDTH) * maxVol, audioCtx.currentTime);
     oscillator.connect(oscillatorGain);
     oscillatorGain.connect(primaryGainControl);
     oscillator.start();
@@ -147,7 +139,7 @@ const loadGraph = async (blob, isInit, audioCtx) => {
       graph.dataset.held = 'true';
       animateTouchBubble(event);
       const sounds = [];
-      console.log(event);
+
       for (let i = 0; i < 1; i++) {
         sounds.push(blob ? playBlob(event) : playMiddleC(event));
       }
@@ -175,7 +167,7 @@ const loadGraph = async (blob, isInit, audioCtx) => {
 
     animateTouchBubble(event);
     const sounds = [];
-    console.log(event);
+
     for (let i = 0; i < event.touches.length; i++) {
       sounds.push(blob ? playBlob(event) : playMiddleC(event));
     }
@@ -183,7 +175,7 @@ const loadGraph = async (blob, isInit, audioCtx) => {
     graph.addEventListener('touchmove', (event) => {
       for (let i = 0; i < sounds.length; i++) {
         sounds[i].frequency.setValueAtTime(
-          event.touches[i].clientY,
+          (event.touches[i].clientY / HEIGHT) * maxFreq,
           audioCtx.currentTime
         );
       }

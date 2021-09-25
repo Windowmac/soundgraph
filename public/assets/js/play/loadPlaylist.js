@@ -3,7 +3,7 @@ import loadGraph from './loadGraph.js';
 const loadPlaylist = async (blob, isInit, audioCtx) => {
   
   const recordedSounds = await axios.get('/.netlify/functions/getSounds');
-  console.log('recorded sounds are: ', recordedSounds);
+
   const sectionEl = document.createElement('div');
   sectionEl.style.height = '100vw';
   sectionEl.classList.add('section');

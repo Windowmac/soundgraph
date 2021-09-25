@@ -10,7 +10,6 @@ exports.handler = async (event, context) => {
   await connect;
   const eventBody = JSON.parse(event.body);
 
-  console.log(event);
   const soundData = await Sound.create({
     name: eventBody.name,
     url: eventBody.url,
