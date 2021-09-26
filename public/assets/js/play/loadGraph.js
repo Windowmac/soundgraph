@@ -147,7 +147,7 @@ const loadGraph = async (blob, isInit, audioCtx) => {
       graph.addEventListener('mousemove', (event) => {
         for (let i = 0; i < sounds.length; i++) {
           sounds[i].frequency.setValueAtTime(
-            event.clientY,
+            (event.clientY / HEIGHT) * maxFreq,
             audioCtx.currentTime
           );
         }
