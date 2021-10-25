@@ -38,7 +38,10 @@ const record = (stream, chunkArr, isInit, audioCtx) => {
     
     loadPlaylist(blob, isInit, audioCtx);
   };
-
+  recordBtn.addEventListener('mousedown', () => {
+    startRecord();
+    recordBtn.addEventListener('mouseup', () => stopRecord);
+  });
 };
 
 export default record;
