@@ -23,10 +23,12 @@ const loadGraph = async (blob, isInit, audioCtx) => {
   const fetchedFile = blob
     ? await fetch(blob.data.url, {
         headers: {
-          origin: 'localhost',
+          origin: 'https://windowmac-soundgraph.netlify.app/',
         },
       })
     : '';
+
+  console.log('fetched file is: ', fetchedFile);
   const bufferArray = blob ? fetchedFile.arrayBuffer() : '';
   const decodedBuffer = bufferArray
     ? await audioCtx.decodeAudioData(bufferArray)
