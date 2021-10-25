@@ -40,7 +40,7 @@ const record = (stream, chunkArr, isInit, audioCtx) => {
   };
   recordBtn.addEventListener('mousedown', () => {
     startRecord();
-    recordBtn.addEventListener('mouseup', () => stopRecord);
+    recordBtn.addEventListener('mouseup', () => stopRecord());
   });
 };
 
