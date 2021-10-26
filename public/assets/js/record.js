@@ -31,7 +31,7 @@ const record = (stream, chunkArr, isInit, audioCtx) => {
       document.getElementById('rec-audio').parentNode.removeChild(document.getElementById('rec-audio'));
     }
 
-    sendBlobForm(blob, clipName);
+    await sendBlobForm(blob, clipName);
 
     const sectionEl = document.getElementById('section');
     sectionEl.parentNode.removeChild(sectionEl);
