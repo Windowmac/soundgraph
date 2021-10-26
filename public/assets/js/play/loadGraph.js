@@ -37,9 +37,10 @@ const loadGraph = async (blob, isInit, audioCtx) => {
   const playBlob = async (event, sound) => {
     let CurX;
     let CurY;
-    if (event.touches.length) {
-      CurX = event.touches[0].clientX;
-      CurY = event.touches[0].clientY;
+    const currentTouchIndex = event.touches ? event.touches.length - 1 : 0;
+    if (event.touches) {
+      CurX = event.touches[currentTouchIndex].clientX;
+      CurY = event.touches[currentTouchIndex].clientY;
     } else {
       CurX = event.pageX;
       CurY = event.pageY;
