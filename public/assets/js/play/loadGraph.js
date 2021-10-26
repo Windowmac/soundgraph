@@ -29,7 +29,7 @@ const loadGraph = async (blob, isInit, audioCtx) => {
     : '';
 
   console.log('fetched file is: ', fetchedFile);
-  const bufferArray = blob ? fetchedFile.body.arrayBuffer() : '';
+  const bufferArray = await fetchedFile ? fetchedFile.arrayBuffer() : '';
   const decodedBuffer = bufferArray
     ? await audioCtx.decodeAudioData(bufferArray)
     : '';
