@@ -1,6 +1,7 @@
 import animateTouchBubble from '../play/animateTouchBubble.js';
 import createGraph from '../create/createGraph.js';
 import playMiddleC from '../play/playMiddleC.js';
+import playBlob from '../play/playBlob.js';
 
 const loadGraph = async (blob, isInit, audioCtx) => {
   if (isInit) {
