@@ -1,5 +1,5 @@
 import loadPlaylist from "./play/loadPlaylist.js";
-import record from "./record.js";
+import applyRecord from "./applyRecord.js";
 
 let isInit = false;
 let audioCtx;
@@ -11,7 +11,7 @@ if (navigator.mediaDevices.getUserMedia) {
   let chunks = [];
 
   const onSuccess = (stream) => {
-    record(stream, chunks);
+    applyRecord(stream, chunks);
   };
 
   navigator.mediaDevices.getUserMedia(constraints).then(onSuccess, (err) => {

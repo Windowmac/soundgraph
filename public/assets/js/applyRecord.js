@@ -1,7 +1,7 @@
 import loadPlaylist from "./play/loadPlaylist.js";
 import sendBlobForm from "./play/sendBlobForm.js";
 
-const record = (stream, chunkArr, isInit, audioCtx) => {
+const applyRecord = (stream, chunkArr, isInit, audioCtx) => {
   const recordBtn = document.getElementById('record');
   const mediaRecorder = new MediaRecorder(stream);
 
@@ -44,4 +44,4 @@ const record = (stream, chunkArr, isInit, audioCtx) => {
   });
 };
 
-export default record;
+export default applyRecord;
