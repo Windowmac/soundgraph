@@ -106,16 +106,16 @@ const loadGraph = async (blob, isInit, audioCtx) => {
       for (let i = 0; i < sounds.length; i++) {
         if (sounds[i].oscillator) {
           sounds[i].oscillator.frequency.setValueAtTime(
-            (event.touches[event.touches.length - 1].clientY / audioSettings.HEIGHT) * audioSettings.maxFreq,
+            (event.touches[i].clientY / audioSettings.HEIGHT) * audioSettings.maxFreq,
             audioCtx.currentTime
           );
           sounds[i].oscillatorGain.gain.setValueAtTime(
-            (event.touches[event.touches.length - 1].clientX / audioSettings.WIDTH) * audioSettings.maxVol,
+            (event.touches[i].clientX / audioSettings.WIDTH) * audioSettings.maxVol,
             audioCtx.currentTime
           );
         } else {
-          sounds[i].gain.gain.setValueAtTime((event.touches[event.touches.length - 1].clientX / audioSettings.WIDTH) * audioSettings.maxVol, audioCtx.currentTime);
-          sounds[i].distortion = makeDistortionCurve((event.clientX / audioSettings.WIDTH) * 200);
+          sounds[i].gain.gain.setValueAtTime((event.touches[i].clientX / audioSettings.WIDTH) * audioSettings.maxVol, audioCtx.currentTime);
+          sounds[i].distortion = makeDistortionCurve((event.touches[i].clientX / audioSettings.WIDTH) * 200);
         }
       }
     });
