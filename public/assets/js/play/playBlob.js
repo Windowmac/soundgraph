@@ -1,4 +1,4 @@
-const playBlob = async (event, sound, audioSettings) => {
+const playBlob = async (event, audioCtx, audioSettings, graph, sound) => {
     let CurX;
     let CurY;
     const currentTouchIndex = event.touches ? event.touches.length - 1 : 0;

@@ -48,7 +48,7 @@ const loadGraph = async (blob, isInit, audioCtx) => {
       for (let i = 0; i < 1; i++) {
         sounds.push(
           blob
-            ? playBlob(event, audioCtx, audioSettings, graph)
+            ? playBlob(event, audioCtx, audioSettings, graph, sounds[i])
             : playMiddleC(event, audioCtx, audioSettings, graph)
         );
       }
