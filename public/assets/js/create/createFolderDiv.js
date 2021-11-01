@@ -1,4 +1,4 @@
-import loadRecordedSounds from './loadRecordedSounds.js';
+import loadRecordedSounds from '../load/loadRecordedSounds.js';
 
 const createFolderDiv = (recordedSounds, sectionEl, isInit, audioCtx) => {
   const getSoundsEl = document.createElement('div');

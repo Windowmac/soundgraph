@@ -1,4 +1,4 @@
-import createFolderDiv from './createFolderDiv.js';
+import createFolderDiv from '../create/createFolderDiv.js';
 import loadMiddleC from './loadMiddleC.js';
 
 const loadPlaylist = async (isInit, audioCtx) => {

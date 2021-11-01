@@ -1,6 +1,6 @@
-import animateTouchBubble from './animateTouchBubble.js';
-import createGraph from './createGraph.js';
-import playMiddleC from './playMiddleC.js';
+import animateTouchBubble from '../play/animateTouchBubble.js';
+import createGraph from '../create/createGraph.js';
+import playMiddleC from '../play/playMiddleC.js';
 
 const loadGraph = async (blob, isInit, audioCtx) => {
   if (isInit) {

@@ -23,7 +23,7 @@ const sendBlobForm = async (blob, clipName) => {
       .then(handleSnapshot)
       .catch((err) => console.log(err));
 
-uploadSound(storage, blob);
+return uploadSound(storage, blob);
 };
 
 export default sendBlobForm;

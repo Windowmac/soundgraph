@@ -1,5 +1,5 @@
-import loadPlaylist from "./play/loadPlaylist.js";
-import sendBlobForm from "./play/sendBlobForm.js";
+import loadPlaylist from "./load/loadPlaylist.js";
+import sendBlobForm from "./sendBlobForm.js";
 
 const applyRecord = (stream, chunkArr, isInit, audioCtx) => {
   const recordBtn = document.getElementById('record');
@@ -31,12 +31,12 @@ const applyRecord = (stream, chunkArr, isInit, audioCtx) => {
       document.getElementById('rec-audio').parentNode.removeChild(document.getElementById('rec-audio'));
     }
 
-    await sendBlobForm(blob, clipName);
-
-    const sectionEl = document.getElementById('section');
-    sectionEl.parentNode.removeChild(sectionEl);
-    
-    loadPlaylist(blob, isInit, audioCtx);
+    sendBlobForm(blob, clipName).then(() => {
+      const sectionEl = document.getElementById('section');
+      sectionEl.parentNode.removeChild(sectionEl);
+      
+      loadPlaylist(blob, isInit, audioCtx);
+    });
   };
   recordBtn.addEventListener('mousedown', () => {
     startRecord();

@@ -1,4 +1,4 @@
-import loadPlaylist from "./play/loadPlaylist.js";
+import loadPlaylist from "./load/loadPlaylist.js";
 import applyRecord from "./applyRecord.js";
 
 let isInit = false;
