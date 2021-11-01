@@ -37,8 +37,8 @@ const playBlob = async (event, audioCtx, audioSettings, graph, sound) => {
       analyser.connect(audioSettings.primaryGainControl);
 
       distortion.oversample = '4x';
-      distortion.curve = makeDistortionCurve((CurX / audioSettings.WIDTH) * audioSettings.maxVol);
-      biquadFilter.type = "allpass";
+      distortion.curve = makeDistortionCurve((CurY / audioSettings.HEIGHT) * 200);
+      biquadFilter.type = "lowshelf";
       biquadFilter.detune.value = (CurY / audioSettings.HEIGHT) * audioSettings.maxFreq;
 
       audioSourceNode.start();
@@ -54,7 +54,7 @@ const playBlob = async (event, audioCtx, audioSettings, graph, sound) => {
           });
         audioSourceNode.stop();
       });
-      return biquadFilter.detune.value;
+      return {distortion: distortion.curve, gain: blobGain, CurX: CurX};
     }
   };
 
