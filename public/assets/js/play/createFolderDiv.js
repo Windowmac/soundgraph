@@ -1,6 +1,6 @@
 import loadRecordedSounds from './loadRecordedSounds.js';
 
-const createFolderDiv = (recordedSounds, sectionEl) => {
+const createFolderDiv = (recordedSounds, sectionEl, isInit, audioCtx) => {
   const getSoundsEl = document.createElement('div');
   getSoundsEl.classList.add('box', 'has-background-dark');
   const iconTextEl = document.createElement('div');
@@ -40,7 +40,7 @@ const createFolderDiv = (recordedSounds, sectionEl) => {
     getSoundsEl.parentNode.removeChild(getSoundsEl);
     const playMiddleC = document.getElementById('playMiddleC');
     playMiddleC.parentNode.removeChild(playMiddleC);
-    loadRecordedSounds(recordedSounds, sectionEl);
+    loadRecordedSounds(recordedSounds, sectionEl, isInit, audioCtx);
   });
 };
 

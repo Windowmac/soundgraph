@@ -8,9 +8,8 @@ const loadPlaylist = async (isInit, audioCtx) => {
   const sectionEl = document.createElement('div');
   sectionEl.style.height = '100vw';
   sectionEl.classList.add('section');
-  let loadRecorded = false;
 
-  createFolderDiv(recordedSounds, sectionEl);
+  createFolderDiv(recordedSounds, sectionEl, isInit, audioCtx);
 
   loadMiddleC(sectionEl, isInit, audioCtx);
 };

@@ -1,5 +1,5 @@
-
-  const loadRecordedSounds = (recordedSounds, sectionEl) => {
+import loadGraph from "./loadGraph.js";
+  const loadRecordedSounds = (recordedSounds, sectionEl, isInit, audioCtx) => {
     recordedSounds.data.forEach((sound) => {
       const playRecordedSoundEl = document.createElement('div');
       playRecordedSoundEl.classList.add('box', 'has-background-dark');
