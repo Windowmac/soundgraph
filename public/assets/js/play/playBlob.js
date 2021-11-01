@@ -1,3 +1,5 @@
+import makeDistortionCurve from "./makeDistortionCurve.js";
+
 const playBlob = async (event, audioCtx, audioSettings, graph, sound) => {
     let CurX;
     let CurY;
@@ -20,9 +22,25 @@ const playBlob = async (event, audioCtx, audioSettings, graph, sound) => {
       const blobGain = audioCtx.createGain();
 
       blobGain.gain.setValueAtTime((CurX / audioSettings.WIDTH) * audioSettings.maxVol, audioCtx.currentTime);
-      audioSourceNode.connect(blobGain);
+      const analyser = audioCtx.createAnalyser();
+      analyser.minDecibels = -90;
+      analyser.maxDecibels = -10;
+      analyser.smoothingTimeConstant = 0.85;
+    
+      const distortion = audioCtx.createWaveShaper();
+      const biquadFilter = audioCtx.createBiquadFilter();
 
-      blobGain.connect(audioSettings.primaryGainControl)
+      audioSourceNode.connect(distortion);
+      distortion.connect(biquadFilter);
+      biquadFilter.connect(blobGain);
+      blobGain.connect(analyser);
+      analyser.connect(audioSettings.primaryGainControl);
+
+      distortion.oversample = '4x';
+      distortion.curve = makeDistortionCurve((CurX / audioSettings.WIDTH) * audioSettings.maxVol);
+      biquadFilter.type = "allpass";
+      biquadFilter.detune.value = (CurY / audioSettings.HEIGHT) * audioSettings.maxFreq;
+
       audioSourceNode.start();
       graph.addEventListener('mouseup', () => {
         [...document.getElementsByClassName('touch-bubble')].forEach((bubble) => {
@@ -36,7 +54,7 @@ const playBlob = async (event, audioCtx, audioSettings, graph, sound) => {
           });
         audioSourceNode.stop();
       });
-      return audioSourceNode;
+      return biquadFilter.detune.value;
     }
   };
 

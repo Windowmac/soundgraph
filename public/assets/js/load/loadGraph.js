@@ -18,12 +18,19 @@ const loadGraph = async (blob, isInit, audioCtx) => {
   primaryGainControl.connect(audioCtx.destination);
 
   const fetchedFile = blob
-    ? await fetch(blob.data.url, {
-        headers: {
-          origin: 'https://windowmac-soundgraph.netlify.app/',
-        },
-      })
-    : '';
+    ? 
+    await fetch(blob.data.url, {
+          headers: {
+            origin: 'https://windowmac-soundgraph.netlify.app/',
+          },
+        })
+    // await fetch(
+    //     'https://unpkg.com/@teropa/drumkit@1.1.0/src/assets/hatOpen2.mp3'
+    //   ).catch((err) => {
+    //     console.log(err);
+    //   })
+    : 
+      '';
 
   const bufferArray = fetchedFile ? await fetchedFile.arrayBuffer() : '';
   const decodedBuffer = bufferArray
@@ -55,10 +62,19 @@ const loadGraph = async (blob, isInit, audioCtx) => {
 
       graph.addEventListener('mousemove', (event) => {
         for (let i = 0; i < sounds.length; i++) {
-          sounds[i].frequency.setValueAtTime(
-            (event.clientY / audioSettings.HEIGHT) * audioSettings.maxFreq,
-            audioCtx.currentTime
-          );
+          if (sounds[i].oscillator.frequency) {
+            sounds[i].oscillator.frequency.setValueAtTime(
+              (event.clientY / audioSettings.HEIGHT) * audioSettings.maxFreq,
+              audioCtx.currentTime
+            );
+            sounds[i].oscillatorGain.gain.setValueAtTime(
+              (event.clientX / audioSettings.WIDTH) * audioSettings.maxVol,
+              audioCtx.currentTime
+            );
+          } else {
+            sounds[i] =
+              (event.clientY / audioSettings.HEIGHT) * audioSettings.maxFreq;
+          }
         }
       });
     }
@@ -87,11 +103,19 @@ const loadGraph = async (blob, isInit, audioCtx) => {
 
     graph.addEventListener('touchmove', (event) => {
       for (let i = 0; i < sounds.length; i++) {
-        sounds[i].frequency.setValueAtTime(
-          (event.touches[i].clientY / audioSettings.HEIGHT) *
-            audioSettings.maxFreq,
-          audioCtx.currentTime
-        );
+        if (sounds[i].oscillator.frequency) {
+          sounds[i].oscillator.frequency.setValueAtTime(
+            (event.touches[i].clientY / audioSettings.HEIGHT) * audioSettings.maxFreq,
+            audioCtx.currentTime
+          );
+          sounds[i].oscillatorGain.gain.setValueAtTime(
+            (event.touches[i].clientX / audioSettings.WIDTH) * audioSettings.maxVol,
+            audioCtx.currentTime
+          );
+        } else {
+          sounds[i] =
+            (event.touches[i].clientY / audioSettings.HEIGHT) * audioSettings.maxFreq;
+        }
       }
     });
   });

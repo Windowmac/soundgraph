@@ -66,7 +66,7 @@
       oscillator.stop();
     });
 
-    return oscillator;
+    return { oscillator: oscillator, oscillatorGain: oscillatorGain };
   };
 
 export default playMiddleC;
