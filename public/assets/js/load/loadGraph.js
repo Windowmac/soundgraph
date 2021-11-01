@@ -25,6 +25,7 @@ const loadGraph = async (blob, isInit, audioCtx) => {
             origin: 'https://windowmac-soundgraph.netlify.app/',
           },
         })
+    //for testing ->
     // await fetch(
     //     'https://unpkg.com/@teropa/drumkit@1.1.0/src/assets/hatOpen2.mp3'
     //   ).catch((err) => {
@@ -74,7 +75,7 @@ const loadGraph = async (blob, isInit, audioCtx) => {
             );
           } else {
             sounds[i].gain.gain.setValueAtTime((event.clientX / audioSettings.WIDTH) * audioSettings.maxVol, audioCtx.currentTime);
-            sounds[i].distortion = makeDistortionCurve((event.clientX / audioSettings.WIDTH) * 200);
+            sounds[i].distortion.curve = makeDistortionCurve((event.clientY / audioSettings.HEIGHT) * 800);
           }
         }
       });
@@ -115,7 +116,7 @@ const loadGraph = async (blob, isInit, audioCtx) => {
           );
         } else {
           sounds[i].gain.gain.setValueAtTime((event.touches[i].clientX / audioSettings.WIDTH) * audioSettings.maxVol, audioCtx.currentTime);
-          sounds[i].distortion = makeDistortionCurve((event.touches[i].clientX / audioSettings.WIDTH) * 200);
+          sounds[i].distortion = makeDistortionCurve((event.touches[i].clientY / audioSettings.HEIGHT) * 1000);
         }
       }
     });
