@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
   password: String,
 });
 
-userSchema.pre(save, (next) => {
+userSchema.pre(this.create, (next) => {
   const user = this;
 
   // only hash the password if it has been modified (or is new)
