@@ -3,7 +3,7 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 
 const connect = mongoose.connect(process.env.MONGO_DB_URI, { useNewUrlParser: true });
-const { Sound, User } = require('./models');
+const Sound = require('./models/Sound.js');
 
 exports.handler = async (event, context) => {
   await connect;
