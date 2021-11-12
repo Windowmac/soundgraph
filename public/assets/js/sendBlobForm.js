@@ -4,6 +4,7 @@ const sendBlobForm = async (blob, clipName) => {
   // const fd = new FormData();
   // fd.append('newSound', blob, `${clipName}.ogg`);
   const getSettings = await axios.get('/.netlify/functions/firebaseSettings');
+  console.log(getSettings.data);
   const settings = getSettings.data;
   const app = firebase.initializeApp(settings);
   const storage = app.storage();
